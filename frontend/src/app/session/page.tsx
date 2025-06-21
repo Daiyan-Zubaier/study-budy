@@ -5,16 +5,24 @@ import Quiz from "../components/Quiz";
 import Flashcards from "../components/Flashcards";
 
 export default function SessionPage() {
-  const [seconds, setSeconds] = useState(0);
+  const [inputMinutes, setInputMinutes] = useState(25); // default 25 min
+  const [secondsLeft, setSecondsLeft] = useState(25 * 60);
   const [running, setRunning] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [option, setOption] = useState("upload");
 
   const startTimer = () => {
-    if (!running) {
+    if (!running && secondsLeft > 0) {
       setRunning(true);
       intervalRef.current = setInterval(() => {
-        setSeconds((s) => s + 1);
+        setSecondsLeft((s) => {
+          if (s <= 1) {
+            clearInterval(intervalRef.current!);
+            setRunning(false);
+            return 0;
+          }
+          return s - 1;
+        });
       }, 1000);
     }
   };
@@ -25,9 +33,15 @@ export default function SessionPage() {
   };
 
   const resetTimer = () => {
-    setSeconds(0);
+    setSecondsLeft(inputMinutes * 60);
     setRunning(false);
     if (intervalRef.current) clearInterval(intervalRef.current);
+  };
+
+  const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = Math.max(1, Number(e.target.value));
+    setInputMinutes(val);
+    setSecondsLeft(val * 60);
   };
 
   let content = null;
@@ -37,17 +51,28 @@ export default function SessionPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] gap-8">
+      <div className="flex flex-col items-center gap-2">
+        <label className="text-sm">Set Minutes:</label>
+        <input
+          type="number"
+          min={1}
+          value={inputMinutes}
+          onChange={handleMinutesChange}
+          className="border rounded px-2 py-1 w-20 text-center"
+          disabled={running}
+        />
+      </div>
       <div className="text-4xl font-bold">
-        {Math.floor(seconds / 60)
+        {Math.floor(secondsLeft / 60)
           .toString()
           .padStart(2, "0")}
-        :{(seconds % 60).toString().padStart(2, "0")}
+        :{(secondsLeft % 60).toString().padStart(2, "0")}
       </div>
       <div className="flex gap-4">
         <button
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
           onClick={startTimer}
-          disabled={running}
+          disabled={running || secondsLeft === 0}
         >
           Start
         </button>
