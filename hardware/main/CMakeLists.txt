@@ -1,3 +1,17 @@
-idf_component_register(SRCS "hello_world_main.c"
-                    PRIV_REQUIRES spi_flash
-                    INCLUDE_DIRS "")
+idf_component_register(
+    SRCS 
+        "Src/main.c"
+        "Src/mpu6050.c"
+        "Src/wifi_manager.c"
+        "Src/http_server.c"
+    INCLUDE_DIRS 
+        "Inc"
+    REQUIRES 
+        esp_wifi
+        esp_http_client
+        driver
+        nvs_flash      
+        esp_netif    
+        esp_event
+        esp_http_server
+)
