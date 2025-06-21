@@ -1,10 +1,11 @@
 #include "mpu6050.h"
 #include "driver/i2c.h"
+#include "driver/gpio.h"
 #include <math.h>
 
 #define I2C_MASTER_NUM         I2C_NUM_0
-#define I2C_MASTER_SDA_IO      21
-#define I2C_MASTER_SCL_IO      22
+#define I2C_MASTER_SDA_IO      GPIO_NUM_21
+#define I2C_MASTER_SCL_IO      GPIO_NUM_22
 #define I2C_MASTER_FREQ_HZ     400000
 #define MPU6050_ADDR           0x68
 #define REG_PWR_MGMT1          0x6B
@@ -15,8 +16,12 @@ static esp_err_t i2c_master_init(void) {
         .mode = I2C_MODE_MASTER,
         .sda_io_num = I2C_MASTER_SDA_IO,
         .scl_io_num = I2C_MASTER_SCL_IO,
-        .master.clk_speed = I2C_MASTER_FREQ_HZ,
+        //.master.clk_speed = I2C_MASTER_FREQ_HZ,
     };
+    conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
+    conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
+    conf.master.clk_speed = I2C_MASTER_FREQ_HZ;
+
     esp_err_t err = i2c_param_config(I2C_MASTER_NUM, &conf);
     if (err != ESP_OK) return err;
     return i2c_driver_install(I2C_MASTER_NUM, conf.mode, 0, 0, 0);
@@ -50,3 +55,4 @@ esp_err_t mpu6050_get_tilt(float *out_angle_deg) {
     *out_angle_deg = atan2f(fx, fz) * 180.0f / M_PI;
     return ESP_OK;
 }
+
