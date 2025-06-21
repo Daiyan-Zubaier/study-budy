@@ -6,6 +6,7 @@ import Flashcards from "../components/Flashcards";
 
 export default function SessionPage() {
   const [inputMinutes, setInputMinutes] = useState(25); // default 25 min
+  const [inputSeconds, setInputSeconds] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(25 * 60);
   const [running, setRunning] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -35,15 +36,22 @@ export default function SessionPage() {
   };
 
   const resetTimer = () => {
-    setSecondsLeft(inputMinutes * 60);
+    setSecondsLeft(inputMinutes * 60 + inputSeconds);
     setRunning(false);
     if (intervalRef.current) clearInterval(intervalRef.current);
   };
 
   const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = Math.max(1, Number(e.target.value));
+    const val = Math.max(0, Number(e.target.value));
     setInputMinutes(val);
-    setSecondsLeft(val * 60);
+    setSecondsLeft(val * 60 + inputSeconds);
+  };
+
+  const handleSecondsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = Math.max(0, Number(e.target.value));
+    if (val > 59) val = 59; // cap at 59 seconds
+    setInputSeconds(val);
+    setSecondsLeft(inputMinutes * 60 + val);
   };
 
   let content: React.ReactNode = null;
@@ -78,7 +86,7 @@ export default function SessionPage() {
 
   return (
     <div className=" text-black flex flex-col items-center justify-center min-h-[70vh] gap-10 bg-gray-50 p-6 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-gray-800">New Study Session</h1>
+      <h1 className="text-2xl font-bold text-gray-800">{sessionTitle || "New Study Session"}</h1>
 
       {/* Session name + minutes */}
       <div className="flex flex-wrap items-end justify-center gap-8">
@@ -89,17 +97,35 @@ export default function SessionPage() {
             placeholder="e.g. Physics Review"
             value={sessionTitle}
             onChange={(e) => setSessionTitle(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.currentTarget.blur();
+              }
+            }}
             className="w-56 rounded border px-3 py-1 text-center shadow-sm focus:border-blue-500 focus:outline-none"
           />
         </div>
 
         <div className="flex flex-col items-center gap-2">
-          <label className="text-sm">Set Minutes:</label>
+          <label className="text-sm">Minutes:</label>
           <input
             type="number"
-            min={1}
+            min={0}
             value={inputMinutes}
             onChange={handleMinutesChange}
+            className="w-20 rounded border px-2 py-1 text-center shadow-sm focus:border-blue-500 focus:outline-none"
+            disabled={running}
+          />
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+          <label className="text-sm">Seconds:</label>
+          <input
+            type="number"
+            min={0}
+            max={59}
+            value={inputSeconds}
+            onChange={handleSecondsChange}
             className="w-20 rounded border px-2 py-1 text-center shadow-sm focus:border-blue-500 focus:outline-none"
             disabled={running}
           />
@@ -107,10 +133,9 @@ export default function SessionPage() {
       </div>
 
       <div className="text-4xl font-bold text-gray-900">
-        {Math.floor(secondsLeft / 60)
-          .toString()
-          .padStart(2, "0")}
-        :{(secondsLeft % 60).toString().padStart(2, "0")}
+        {Math.floor(secondsLeft / 60).toString().padStart(2, "0")}
+        :
+        {(secondsLeft % 60).toString().padStart(2, "0")}
       </div>
       <div className="flex gap-4">
         <button
