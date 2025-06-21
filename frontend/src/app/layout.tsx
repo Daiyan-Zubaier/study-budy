@@ -1,0 +1,16 @@
+// frontend/app/layout.tsx
+import "../styles/globals.css";   // pulls in Tailwind + your resets
+import type { ReactNode } from "react";
+
+export const metadata = {
+  title: "My Site",
+  description: "Whatever description you like",
+};
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
