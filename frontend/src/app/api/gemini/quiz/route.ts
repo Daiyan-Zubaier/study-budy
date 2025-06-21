@@ -13,7 +13,7 @@ ${text}
 
   // Call Gemini API
   const response = await fetch(
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyCKP1TWl_7Jg_XUpNy9ZdVVDkdf63oVBJo",
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB2-KM1JzPgpMeqM2jGs6Z2B5DtsouHZDE",
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
