@@ -2,8 +2,10 @@ import React from 'react';
 
 export default function Page() {
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold text-blue-200">Hello World</h1>
+    <div className="flex h-full items-center justify-center p-4">
+      <button className="rounded bg-blue-600 px-6 py-3 text-white hover:bg-blue-700">
+        Start session
+      </button>
     </div>
   );
 }
