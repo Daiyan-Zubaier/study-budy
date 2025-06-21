@@ -11,6 +11,7 @@ export default function SessionPage() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [option, setOption] = useState("upload");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [sessionTitle, setSessionTitle] = useState("");
 
   const startTimer = () => {
     if (!running && secondsLeft > 0) {
@@ -52,19 +53,36 @@ export default function SessionPage() {
 
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] gap-8">
-      <div className="flex flex-col items-center gap-2">
-        <label className="text-sm">Set Minutes:</label>
-        <input
-          type="number"
-          min={1}
-          value={inputMinutes}
-          onChange={handleMinutesChange}
-          className="border rounded px-2 py-1 w-20 text-center"
-          disabled={running}
-        />
+    <div className=" text-black flex flex-col items-center justify-center min-h-[70vh] gap-10 bg-gray-50 p-6 rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold text-gray-800">New Study Session</h1>
+
+      {/* Session name + minutes */}
+      <div className="flex flex-wrap items-end justify-center gap-8">
+        <div className="flex flex-col items-center gap-2">
+          <label className="text-sm">Session Title:</label>
+          <input
+            type="text"
+            placeholder="e.g. Physics Review"
+            value={sessionTitle}
+            onChange={(e) => setSessionTitle(e.target.value)}
+            className="w-56 rounded border px-3 py-1 text-center shadow-sm focus:border-blue-500 focus:outline-none"
+          />
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+          <label className="text-sm">Set Minutes:</label>
+          <input
+            type="number"
+            min={1}
+            value={inputMinutes}
+            onChange={handleMinutesChange}
+            className="w-20 rounded border px-2 py-1 text-center shadow-sm focus:border-blue-500 focus:outline-none"
+            disabled={running}
+          />
+        </div>
       </div>
-      <div className="text-4xl font-bold">
+
+      <div className="text-4xl font-bold text-gray-900">
         {Math.floor(secondsLeft / 60)
           .toString()
           .padStart(2, "0")}
@@ -94,7 +112,7 @@ export default function SessionPage() {
       </div>
       <div>
         <select
-          className="border rounded px-4 py-2"
+          className="rounded border px-4 py-2 shadow-sm focus:border-blue-500 focus:outline-none"
           value={option}
           onChange={(e) => setOption(e.target.value)}
         >
@@ -103,7 +121,7 @@ export default function SessionPage() {
           <option value="flashcards">Flashcards</option>
         </select>
       </div>
-      <div className="w-full flex justify-center">{content}</div>
+      <div className="flex w-full justify-center">{content}</div>
     </div>
   );
 }
