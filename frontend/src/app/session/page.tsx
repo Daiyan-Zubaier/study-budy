@@ -9,7 +9,7 @@ export default function SessionPage() {
   const [secondsLeft, setSecondsLeft] = useState(25 * 60);
   const [running, setRunning] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [option, setOption] = useState("upload");
+  const [option, setOption] = useState<"upload" | "flashcards" | "quiz">("upload");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [sessionTitle, setSessionTitle] = useState("");
 
@@ -46,11 +46,35 @@ export default function SessionPage() {
     setSecondsLeft(val * 60);
   };
 
-  let content = null;
-  if (option === "upload") content = <Upload onFile={setUploadedFile} />;
-  else if (option === "quiz") content = <Quiz file={uploadedFile} />;
-  else if (option === "flashcards") content = <Flashcards file={uploadedFile} />;
+  let content: React.ReactNode = null;
 
+  if (option === "upload") {
+    content = (
+      <div className="flex flex-col items-center gap-4">
+        <Upload onFile={setUploadedFile} />
+        {uploadedFile && (
+          <div className="flex gap-4">
+            <button
+              className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+              onClick={() => setOption("flashcards")}
+            >
+              Generate Flashcards
+            </button>
+            <button
+              className="rounded bg-purple-600 px-4 py-2 text-white hover:bg-purple-700"
+              onClick={() => setOption("quiz")}
+            >
+              Generate Quiz
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  } else if (option === "quiz") {
+    content = <Quiz file={uploadedFile} autoGenerate />;
+  } else if (option === "flashcards") {
+    content = <Flashcards file={uploadedFile} autoGenerate />;
+  }
 
   return (
     <div className=" text-black flex flex-col items-center justify-center min-h-[70vh] gap-10 bg-gray-50 p-6 rounded-lg shadow-md">
@@ -114,7 +138,7 @@ export default function SessionPage() {
         <select
           className="rounded border px-4 py-2 shadow-sm focus:border-blue-500 focus:outline-none"
           value={option}
-          onChange={(e) => setOption(e.target.value)}
+          onChange={(e) => setOption(e.target.value as "upload" | "flashcards" | "quiz")}
         >
           <option value="upload">Upload</option>
           <option value="quiz">Quiz</option>

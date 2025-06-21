@@ -1,7 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-export default function Quiz({ file }: { file: File | null }) {
+interface QuizProps { file: File | null; autoGenerate?: boolean }
+
+export default function Quiz({ file, autoGenerate = false }: QuizProps) {
   const [fileText, setFileText] = useState<string | null>(null);
   const [quiz, setQuiz] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -32,6 +34,13 @@ export default function Quiz({ file }: { file: File | null }) {
     );
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (autoGenerate) {
+      handleGenerate();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoGenerate]);
 
   if (!file) {
     return (
