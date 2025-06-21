@@ -1,0 +1,1 @@
+ninja: error: 'C:/projects/_esp/study-budy/hardware/main/Src/http_server.c', needed by 'esp-idf/main/CMakeFiles/__idf_main.dir/Src/http_server.c.obj', missing and no known rule to make it

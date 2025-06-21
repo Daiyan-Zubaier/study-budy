@@ -2,6 +2,8 @@ idf_component_register(
     SRCS 
         "Src/main.c"
         "Src/mpu6050.c"
+        "Src/wifi_manager.c"
+        "Src/http_server.c"
     INCLUDE_DIRS 
         "Inc"
     REQUIRES 
@@ -11,4 +13,5 @@ idf_component_register(
         nvs_flash      
         esp_netif    
         esp_event
+        esp_http_server
 )
