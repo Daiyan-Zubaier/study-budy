@@ -1,11 +1,14 @@
+// /frontend/app/session/page.tsx
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Upload from "../components/Upload";
 import Quiz from "../components/Quiz";
 import Flashcards from "../components/Flashcards";
+import { db } from "../../lib/firebase";
+import { collection, doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 
 export default function SessionPage() {
-  const [inputMinutes, setInputMinutes] = useState(25); // default 25 min
+  const [inputMinutes, setInputMinutes] = useState(25);
   const [inputSeconds, setInputSeconds] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(25 * 60);
   const [running, setRunning] = useState(false);
@@ -13,15 +16,31 @@ export default function SessionPage() {
   const [option, setOption] = useState<"upload" | "flashcards" | "quiz">("upload");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [sessionTitle, setSessionTitle] = useState("");
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [startTime, setStartTime] = useState<Date | null>(null);
 
-  const startTimer = () => {
+  const startTimer = async () => {
     if (!running && secondsLeft > 0) {
       setRunning(true);
+      const newStartTime = new Date();
+      setStartTime(newStartTime);
+
+      // Create Firestore doc
+      const newDocRef = doc(collection(db, "sessions"));
+      await setDoc(newDocRef, {
+        title: sessionTitle,
+        startedAt: serverTimestamp(),
+        status: "inProgress"
+      });
+
+      setSessionId(newDocRef.id);
+
       intervalRef.current = setInterval(() => {
         setSecondsLeft((s) => {
           if (s <= 1) {
             clearInterval(intervalRef.current!);
             setRunning(false);
+            stopSession();
             return 0;
           }
           return s - 1;
@@ -30,9 +49,24 @@ export default function SessionPage() {
     }
   };
 
-  const stopTimer = () => {
+  const stopSession = async () => {
     setRunning(false);
     if (intervalRef.current) clearInterval(intervalRef.current);
+    if (!sessionId || !startTime) return;
+
+    const endedAt = new Date();
+    const durationSeconds = Math.round((endedAt.getTime() - startTime.getTime()) / 1000);
+
+    const sessionRef = doc(db, "sessions", sessionId);
+    await updateDoc(sessionRef, {
+      endedAt,
+      durationSeconds,
+      status: "completed"
+    });
+  };
+
+  const stopTimer = () => {
+    stopSession();
   };
 
   const resetTimer = () => {
@@ -49,13 +83,12 @@ export default function SessionPage() {
 
   const handleSecondsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = Math.max(0, Number(e.target.value));
-    if (val > 59) val = 59; // cap at 59 seconds
+    if (val > 59) val = 59;
     setInputSeconds(val);
     setSecondsLeft(inputMinutes * 60 + val);
   };
 
   let content: React.ReactNode = null;
-
   if (option === "upload") {
     content = (
       <div className="flex flex-col items-center gap-4">
@@ -88,7 +121,6 @@ export default function SessionPage() {
     <div className=" text-black flex flex-col items-center justify-center min-h-[70vh] gap-10 bg-gray-50 p-6 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold text-gray-800">{sessionTitle || "New Study Session"}</h1>
 
-      {/* Session name + minutes */}
       <div className="flex flex-wrap items-end justify-center gap-8">
         <div className="flex flex-col items-center gap-2">
           <label className="text-sm">Session Title:</label>
@@ -97,11 +129,7 @@ export default function SessionPage() {
             placeholder="e.g. Physics Review"
             value={sessionTitle}
             onChange={(e) => setSessionTitle(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.currentTarget.blur();
-              }
-            }}
+            onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); }}
             className="w-56 rounded border px-3 py-1 text-center shadow-sm focus:border-blue-500 focus:outline-none"
           />
         </div>
@@ -138,27 +166,11 @@ export default function SessionPage() {
         {(secondsLeft % 60).toString().padStart(2, "0")}
       </div>
       <div className="flex gap-4">
-        <button
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-          onClick={startTimer}
-          disabled={running || secondsLeft === 0}
-        >
-          Start
-        </button>
-        <button
-          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-          onClick={stopTimer}
-          disabled={!running}
-        >
-          Stop
-        </button>
-        <button
-          className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-          onClick={resetTimer}
-        >
-          Reset
-        </button>
+        <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" onClick={startTimer} disabled={running || secondsLeft === 0}>Start</button>
+        <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" onClick={stopTimer} disabled={!running}>Stop</button>
+        <button className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500" onClick={resetTimer}>Reset</button>
       </div>
+
       <div>
         <select
           className="rounded border px-4 py-2 shadow-sm focus:border-blue-500 focus:outline-none"
@@ -170,6 +182,7 @@ export default function SessionPage() {
           <option value="flashcards">Flashcards</option>
         </select>
       </div>
+
       <div className="flex w-full justify-center">{content}</div>
     </div>
   );
