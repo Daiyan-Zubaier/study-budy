@@ -114,7 +114,7 @@ export default function SessionPage() {
   } else if (option === "quiz") {
     content = <Quiz file={uploadedFile} autoGenerate />;
   } else if (option === "flashcards") {
-    content = <Flashcards file={uploadedFile} autoGenerate />;
+    content = <Flashcards file={uploadedFile} autoGenerate sessionId={sessionId ?? "temp-session"} />;
   }
 
   return (

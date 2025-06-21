@@ -1,9 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { app } from "../../lib/firebase"; // or wherever you initialize Firebase
+
 
 interface FlashcardsProps {
   file: File | null;
   autoGenerate?: boolean;
+  sessionId: string; // add this
 }
 
 type Flashcard = {
@@ -11,7 +15,7 @@ type Flashcard = {
   answer: string;
 };
 
-export default function Flashcards({ file, autoGenerate = false }: FlashcardsProps) {
+export default function Flashcards({ file, autoGenerate = false, sessionId }: FlashcardsProps) {
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [fileText, setFileText] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -54,6 +58,20 @@ export default function Flashcards({ file, autoGenerate = false }: FlashcardsPro
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed)) {
         setFlashcards(parsed);
+        const db = getFirestore(app);
+        const flashcardsRef = collection(db, "sessions", sessionId, "flashcards");
+
+        // Save each flashcard to Firestore
+        await Promise.all(
+          parsed.map(async (card: Flashcard) => {
+            await addDoc(flashcardsRef, {
+              question: card.question,
+              answer: card.answer,
+            });
+            console.log("Saved card", card)
+          })
+        );
+
       } else {
         console.error("Parsed flashcards not an array:", parsed);
       }
