@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
-import { app } from "../../lib/firebase"; // or wherever you initialize Firebase
+import app from "../../lib/firebase"; // or wherever you initialize Firebase
 
 
 interface FlashcardsProps {
