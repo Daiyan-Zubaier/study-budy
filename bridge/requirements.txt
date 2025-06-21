@@ -1,0 +1,3 @@
+firebase-admin
+pyserial-asyncio
+python-dotenv
