@@ -10,6 +10,7 @@ export default function SessionPage() {
   const [running, setRunning] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [option, setOption] = useState("upload");
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const startTimer = () => {
     if (!running && secondsLeft > 0) {
@@ -45,9 +46,10 @@ export default function SessionPage() {
   };
 
   let content = null;
-  if (option === "upload") content = <Upload />;
-  else if (option === "quiz") content = <Quiz />;
-  else if (option === "flashcards") content = <Flashcards />;
+  if (option === "upload") content = <Upload onFile={setUploadedFile} />;
+  else if (option === "quiz") content = <Quiz file={uploadedFile} />;
+  else if (option === "flashcards") content = <Flashcards file={uploadedFile} />;
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] gap-8">

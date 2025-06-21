@@ -1,9 +1,8 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 
-export default function Upload() {
+export default function Upload({ onFile }: { onFile: (file: File) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [fileName, setFileName] = useState<string | null>(null);
 
   function handleButtonClick() {
     inputRef.current?.click();
@@ -11,7 +10,7 @@ export default function Upload() {
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (file) setFileName(file.name);
+    if (file) onFile(file);
   }
 
   return (
@@ -30,9 +29,6 @@ export default function Upload() {
       >
         Upload PDF or JPEG
       </button>
-      {fileName && (
-        <div className="mt-2 text-sm text-gray-700">Selected: {fileName}</div>
-      )}
     </div>
   );
 }
