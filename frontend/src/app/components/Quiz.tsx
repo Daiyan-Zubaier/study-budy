@@ -1,80 +1,97 @@
-"use client";
-import React, { useState, useEffect } from "react";
+"use client"
 
-interface QuizProps { file: File | null; autoGenerate?: boolean }
+import React, { useState, useEffect } from "react"
+import { Loader2, Sparkles } from "lucide-react"
+
+interface QuizProps {
+  file: File | null
+  autoGenerate?: boolean
+}
 
 export default function Quiz({ file, autoGenerate = false }: QuizProps) {
-  const [fileText, setFileText] = useState<string | null>(null);
-  const [quiz, setQuiz] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [fileText, setFileText] = useState<string | null>(null)
+  const [quiz, setQuiz] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   const handleGenerate = async () => {
-    if (!file) return;
-    setLoading(true);
-    setQuiz(null);
+    if (!file) return
+    setLoading(true)
+    setQuiz(null)
 
-    let text = "";
+    let text = ""
     if (file.type === "application/pdf") {
-      const { extractTextFromPDF } = await import("../utils/pdfUtils");
-      text = await extractTextFromPDF(file);
+      const { extractTextFromPDF } = await import("../utils/pdfUtils")
+      text = await extractTextFromPDF(file)
     } else {
-      text = await file.text();
+      text = await file.text()
     }
 
-    // Call your Gemini API route
+    setFileText(text)
+
     const res = await fetch("/api/gemini/quiz", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text }),
-    });
-    const data = await res.json();
+    })
+    const data = await res.json()
 
     setQuiz(
-      data.candidates?.[0]?.content?.parts?.[0]?.text || "No quiz generated."
-    );
-    setLoading(false);
-  };
+      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+        "No quiz generated."
+    )
+    setLoading(false)
+  }
 
   useEffect(() => {
     if (autoGenerate) {
-      handleGenerate();
+      handleGenerate()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoGenerate]);
+  }, [autoGenerate])
 
   if (!file) {
     return (
-      <div className="p-4 bg-gray-100 rounded shadow text-center">
+      <div className="bg-white/[0.02] border border-white/10 rounded-xl p-6 text-center text-gray-300">
         Please upload a file first.
       </div>
-    );
+    )
   }
 
   return (
-    <div className="p-4 bg-gray-100 rounded shadow text-center">
+    <div className="space-y-6">
       <button
-        className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 mb-4"
         onClick={handleGenerate}
         disabled={loading}
+        className="w-full bg-white text-black hover:bg-gray-100 disabled:bg-white/10 disabled:text-gray-500 disabled:cursor-not-allowed font-medium py-3 px-4 rounded-lg transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/20 flex items-center justify-center gap-2"
       >
-        {loading ? "Generating..." : "Generate Quiz"}
+        {loading ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" /> Generating...
+          </>
+        ) : (
+          <>
+            <Sparkles className="w-4 h-4" /> Generate Quiz
+          </>
+        )}
       </button>
+
       {quiz && (
-        <div>
-          <p className="text-sm text-gray-600">Generated Quiz:</p>
-          <pre className="text-xs bg-white p-2 rounded max-h-40 overflow-auto">
+        <div className="bg-white/[0.02] border border-white/10 rounded-xl p-6">
+          <p className="text-sm text-gray-400 mb-2">Generated Quiz:</p>
+          <pre className="text-xs bg-white/[0.05] text-white p-4 rounded max-h-60 overflow-auto whitespace-pre-wrap">
             {quiz}
           </pre>
         </div>
       )}
+
       {fileText && !quiz && (
-        <div>
-          <p className="text-sm text-gray-600">File contents (for demo):</p>
-          <pre className="text-xs bg-white p-2 rounded max-h-40 overflow-auto">
+        <div className="bg-white/[0.02] border border-white/10 rounded-xl p-6">
+          <p className="text-sm text-gray-400 mb-2">File contents:</p>
+          <pre className="text-xs bg-white/[0.05] text-white p-4 rounded max-h-60 overflow-auto whitespace-pre-wrap">
             {fileText}
           </pre>
         </div>
       )}
     </div>
-  );
+  )
 }
