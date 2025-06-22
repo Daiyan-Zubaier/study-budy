@@ -285,9 +285,12 @@ export default async function SessionStatsPage({ params }: { params: { sessionId
               <h2 className="text-2xl font-semibold mb-6 text-white text-center">🧠 Flashcards</h2>
               <div className="space-y-4">
                 {flashcards.map((card: any, idx: number) => (
-                  <div key={idx} className="border border-gray-300 rounded-xl p-4 bg-gray-50">
-                    <p className="text-gray-800 font-medium">Q{idx + 1}: {card.question}</p>
-                    <p className="text-gray-700 mt-2"><span className="font-semibold text-green-700">Answer:</span> {card.answer}</p>
+                  <div key={idx} 
+                  className="bg-zinc-800/50 border border-zinc-700 rounded-xl p-5 text-white backdrop-blur-md transition hover:shadow-md">
+                    <p className="text-white font-semibold">Q{idx + 1}: {card.question}</p>
+                    <p className="text-zinc-300 mt-2">
+                      <span className="font-semibold text-green-400">Answer:</span> {card.answer}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -308,29 +311,29 @@ export default async function SessionStatsPage({ params }: { params: { sessionId
                   return (
                     <div
                       key={idx}
-                      className={`p-4 rounded-lg shadow-sm border-2 ${isCorrect ? "border-green-300 bg-green-50" : "border-red-300 bg-red-50"
-                        }`}
+                      className={`p-4 rounded-lg shadow-sm border ${isCorrect ? "bg-green-500/10 border-green-400 text-green-100" : "bg-red-500/10 border-red-400 text-red-100"}`}
                     >
                       <div className="mb-2">
-                        <h3 className="text-lg font-semibold text-gray-800">
+                        <h3 className="text-lg font-semibold text-white">
                           Q{idx + 1}: {q.question}
                         </h3>
                       </div>
 
-                      <div className="text-gray-700 mb-1">
+                      <div className="text-zinc-300 mb-1">
                         <span className="font-medium">Your Answer:</span>{" "}
-                        <span className={isCorrect ? "text-green-700 font-bold" : "text-red-700 font-bold"}>
+                        <span className={isCorrect ? "text-green-300 font-bold" : "text-red-400 font-bold"}>
                           {q.selectedAnswer || "No answer"}
                         </span>
                       </div>
 
                       {!isCorrect && (
-                        <div className="text-gray-700">
+                        <div className="text-zinc-300">
                           <span className="font-medium">Correct Answer:</span>{" "}
-                          <span className="text-green-700 font-bold">{q.correctAnswer}</span>
+                          <span className="text-green-400 font-bold">{q.correctAnswer}</span>
                         </div>
                       )}
                     </div>
+
                   );
                 })}
               </div>
