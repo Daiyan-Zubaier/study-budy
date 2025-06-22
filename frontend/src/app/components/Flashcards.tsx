@@ -151,7 +151,7 @@ export default function Flashcards({ file, autoGenerate = false, sessionId }: Fl
       {/* Flashcard */}
 <div className="relative w-full">
   <div
-    className="bg-zinc-100 border border-zinc-300 rounded-3xl p-12 cursor-pointer transition-all duration-300 hover:shadow-2xl group shadow-xl w-full min-h-[24rem] max-h-[24rem] flex items-center justify-center overflow-hidden"
+    className="bg-gray-800/60 border border-gray-700 rounded-3xl p-12 cursor-pointer transition-all duration-300 hover:shadow-2xl group shadow-xl w-full min-h-[24rem] max-h-[24rem] flex items-center justify-center overflow-hidden"
     onClick={() => setShowAnswer(!showAnswer)}
   >
 
@@ -162,10 +162,10 @@ export default function Flashcards({ file, autoGenerate = false, sessionId }: Fl
 
     {/* Card content */}
     <div className="text-center w-full h-full flex flex-col justify-center px-4 overflow-hidden">
-      <div className="text-base font-semibold text-gray-500 mb-6 uppercase tracking-wider flex-shrink-0">
+      <div className="text-base font-semibold text-white mb-6 uppercase tracking-wider flex-shrink-0">
         {showAnswer ? "Answer" : "Question"}
       </div>
-      <div className="text-2xl font-bold text-zinc-900 leading-relaxed max-w-3xl mx-auto flex-1 flex items-center justify-center overflow-y-auto">
+      <div className="text-2xl font-bold text-gray-100 leading-relaxed max-w-3xl mx-auto flex-1 flex items-center justify-center overflow-y-auto">
         <div className="max-h-full overflow-y-auto px-2">
           {showAnswer ? current.answer : current.question}
         </div>
