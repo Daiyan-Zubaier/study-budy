@@ -4,6 +4,7 @@ import {
   FaceLandmarker,
   HandLandmarker,
 } from "@mediapipe/tasks-vision";
+import { Droplets, Coffee, Eye, EyeOff } from "lucide-react";
 
 export default function FaceHandTracker() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -172,22 +173,88 @@ export default function FaceHandTracker() {
   };
 
   return (
-    <div>
+    <div className="relative">
       <video ref={videoRef} style={{ display: "none" }} playsInline />
-      {error && <div className="bg-red-200 text-red-800 p-2 rounded mb-2">{error}</div>}
+      
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/20 backdrop-blur-sm rounded-xl p-4 mb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center">
+              <EyeOff className="text-red-400" size={16} />
+            </div>
+            <div>
+              <h4 className="text-red-400 font-semibold">Camera Error</h4>
+              <p className="text-red-300/80 text-sm">{error}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Detection Status */}
       {detected && (
-        <div className="bg-blue-600 text-white px-4 py-2 rounded shadow-lg animate-bounce">
-          👋 Face and hand detected!
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
+          <div className="bg-blue-500/90 backdrop-blur-sm border border-blue-400/30 rounded-2xl px-6 py-4 shadow-2xl">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-blue-400/20 rounded-full flex items-center justify-center">
+                <Eye className="text-blue-300" size={20} />
+              </div>
+              <div>
+                <h4 className="text-white font-bold">Detection Active</h4>
+                <p className="text-blue-100 text-sm">Face and hand tracking enabled</p>
+              </div>
+            </div>
+          </div>
         </div>
       )}
+
+      {/* Hydration Reminder */}
       {reminder && (
-        <div className="bg-yellow-300 text-yellow-800 p-2 rounded mt-2">
-          ⏰ Reminder: It's been a while since you last drank. Stay hydrated!
+        <div className="fixed bottom-24 left-6 z-50 animate-pulse">
+          <div className="bg-cyan-500/90 backdrop-blur-sm border border-cyan-400/30 rounded-2xl p-6 shadow-2xl max-w-sm">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-cyan-400/20 rounded-full flex items-center justify-center flex-shrink-0">
+                <Droplets className="text-cyan-300" size={24} />
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-lg mb-1">Stay Hydrated!</h4>
+                <p className="text-cyan-100 text-sm leading-relaxed">
+                  It's been a while since you last drank water. Take a quick sip to stay focused! 💧
+                </p>
+              </div>
+            </div>
+            <button 
+              onClick={() => setReminder(false)}
+              className="mt-4 w-full bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-400/30 rounded-xl py-2 px-4 text-cyan-100 font-medium transition-all duration-200"
+            >
+              Thanks for the reminder!
+            </button>
+          </div>
         </div>
       )}
+
+      {/* Break Reminder */}
       {faceBreak && (
-        <div className="bg-orange-300 text-orange-900 p-2 rounded mt-2">
-          🛑 You've been working for a while! Consider taking a short break.
+        <div className="fixed bottom-24 right-6 z-50 animate-pulse">
+          <div className="bg-orange-500/90 backdrop-blur-sm border border-orange-400/30 rounded-2xl p-6 shadow-2xl max-w-sm">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-orange-400/20 rounded-full flex items-center justify-center flex-shrink-0">
+                <Coffee className="text-orange-300" size={24} />
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-lg mb-1">Take a Break!</h4>
+                <p className="text-orange-100 text-sm leading-relaxed">
+                  You've been studying hard! Consider taking a 5-minute break to rest your eyes. ☕
+                </p>
+              </div>
+            </div>
+            <button 
+              onClick={() => setFaceBreak(false)}
+              className="mt-4 w-full bg-orange-600/30 hover:bg-orange-600/50 border border-orange-400/30 rounded-xl py-2 px-4 text-orange-100 font-medium transition-all duration-200"
+            >
+              I'll take a break soon
+            </button>
+          </div>
         </div>
       )}
     </div>
