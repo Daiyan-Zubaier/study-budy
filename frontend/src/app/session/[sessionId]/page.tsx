@@ -23,6 +23,10 @@ export default async function SessionStatsPage({ params }: { params: { sessionId
     const quizSnap = await getDoc(quizRef);
     const quizData = quizSnap.exists() ? quizSnap.data() : null;
 
+    const flashcardSnap = await getDocs(collection(db, "sessions", sessionId, "flashcards"));
+    const flashcards = flashcardSnap.docs.map((doc) => doc.data());
+
+    
 
     console.log("Posture logs:", postureLogs); // Debug log
 
@@ -146,6 +150,19 @@ export default async function SessionStatsPage({ params }: { params: { sessionId
                   </div>
                 );
               })}
+            </div>
+          </div>
+        )}
+        {flashcards.length > 0 && (
+          <div className="bg-white rounded-lg shadow-md p-6 mt-6">
+            <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">🧠 Flashcards</h2>
+            <div className="space-y-4">
+              {flashcards.map((card: any, idx: number) => (
+                <div key={idx} className="border border-gray-300 rounded-xl p-4 bg-gray-50">
+                  <p className="text-gray-800 font-medium">Q{idx + 1}: {card.question}</p>
+                  <p className="text-gray-700 mt-2"><span className="font-semibold text-green-700">Answer:</span> {card.answer}</p>
+                </div>
+              ))}
             </div>
           </div>
         )}
