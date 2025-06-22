@@ -7,6 +7,7 @@ import Flashcards from "../components/Flashcards";
 import { db } from "../../lib/firebase";
 import { collection, doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import PostureMonitor from "../components/PostureMonitor";
+import FaceHandTracker from "../components/FaceHandTracker";
 
 
 export default function SessionPage() {
@@ -197,6 +198,7 @@ export default function SessionPage() {
           />
         )}
       </div>
+      <FaceHandTracker />
     </div>
   );
 }

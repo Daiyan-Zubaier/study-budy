@@ -5,7 +5,11 @@ export async function POST(req: NextRequest) {
 
   // Compose a prompt for quiz generation
   const prompt = `
-Given the following study material, generate a set of quiz questions (with answers) that help a student review the content. Format each question and answer clearly.
+Given the following study material, generate a set of multiple-choice quiz questions to help a student review the content.
+Return the quiz as a JSON array of objects, each with these keys:
+- question: the question string
+- options: an array of 4 answer choices (strings)
+- answer: the correct answer string (must match one of the options exactly)
 
 STUDY MATERIAL:
 ${text}
