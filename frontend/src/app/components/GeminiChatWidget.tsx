@@ -42,51 +42,57 @@ export default function GeminiChatWidget() {
   return (
     <div className="fixed bottom-6 right-6 z-[100]">
       {open ? (
-        <div className="w-[360px] h-[500px] bg-white rounded-xl shadow-lg flex flex-col">
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <h2 className="font-semibold text-gray-800">Ask Gemini 📘</h2>
+        <div className="w-[360px] h-[500px] bg-zinc-900 border border-zinc-800 rounded-xl shadow-lg flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-zinc-800">
+            <h2 className="font-semibold text-white">Ask Gemini 📘</h2>
             <button onClick={() => setOpen(false)}>
-              <X size={20} className="text-gray-500 hover:text-gray-800" />
+                <X size={20} className="text-zinc-400 hover:text-white" />
             </button>
-          </div>
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            </div>
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-zinc-700">
             {messages.map((msg, i) => (
-              <div
+                <div
                 key={i}
-                className={`p-3 rounded-lg text-sm ${
-                  msg.from === "user"
-                    ? "bg-blue-100 text-blue-800 self-end ml-12"
-                    : "bg-gray-100 text-gray-700 self-start mr-12"
+                className={`p-3 rounded-lg text-sm max-w-[80%] ${
+                    msg.from === "user"
+                    ? "bg-blue-600 text-white self-end ml-auto"
+                    : "bg-zinc-800 text-zinc-200 self-start mr-auto"
                 }`}
-              >
+                >
                 {msg.text}
-              </div>
+                </div>
             ))}
-          </div>
-          <div className="p-3 border-t border-gray-200 flex items-center gap-2">
+            </div>
+
+            {/* Input */}
+            <div className="p-3 border-t border-zinc-800 flex items-center gap-2">
             <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-              className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none text-black"
-              placeholder="Ask about your flashcards..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-500 focus:outline-none"
+                placeholder="Ask about your flashcards..."
             />
             <button
-              onClick={sendMessage}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
+                onClick={sendMessage}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
             >
-              Send
+                Send
             </button>
-          </div>
+            </div>
         </div>
-      ) : (
+        ) : (
         <button
-          onClick={() => setOpen(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-xl"
+            onClick={() => setOpen(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-xl"
         >
-          <MessageCircle size={24} />
+            <MessageCircle size={24} />
         </button>
-      )}
+        )}
+
     </div>
   );
 }

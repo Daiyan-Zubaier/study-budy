@@ -151,9 +151,10 @@ export default function Flashcards({ file, autoGenerate = false, sessionId }: Fl
       {/* Flashcard */}
       <div className="relative w-full">
         <div
-          className="bg-white border border-gray-200 rounded-3xl p-12 cursor-pointer transition-all duration-300 hover:shadow-2xl group shadow-xl w-full h-96 flex items-center justify-center overflow-hidden"
+          className="bg-white border border-gray-200 rounded-3xl p-12 cursor-pointer transition-all duration-300 hover:shadow-2xl group shadow-xl w-full min-h-[24rem] max-h-[24rem] flex items-center justify-center overflow-hidden"
           onClick={() => setShowAnswer(!showAnswer)}
         >
+
           {/* Flip indicator */}
           <div className="absolute top-6 right-6 text-gray-400 group-hover:text-gray-600 transition-colors">
             <RotateCcw size={24} />
