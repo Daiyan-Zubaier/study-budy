@@ -149,37 +149,37 @@ export default function Flashcards({ file, autoGenerate = false, sessionId }: Fl
       </div>
 
       {/* Flashcard */}
-      <div className="relative w-full">
-        <div
-          className="bg-white border border-gray-200 rounded-3xl p-12 cursor-pointer transition-all duration-300 hover:shadow-2xl group shadow-xl w-full min-h-[24rem] max-h-[24rem] flex items-center justify-center overflow-hidden"
-          onClick={() => setShowAnswer(!showAnswer)}
-        >
+<div className="relative w-full">
+  <div
+    className="bg-zinc-100 border border-zinc-300 rounded-3xl p-12 cursor-pointer transition-all duration-300 hover:shadow-2xl group shadow-xl w-full min-h-[24rem] max-h-[24rem] flex items-center justify-center overflow-hidden"
+    onClick={() => setShowAnswer(!showAnswer)}
+  >
 
-          {/* Flip indicator */}
-          <div className="absolute top-6 right-6 text-gray-400 group-hover:text-gray-600 transition-colors">
-            <RotateCcw size={24} />
-          </div>
-          
-          {/* Card content */}
-          <div className="text-center w-full h-full flex flex-col justify-center px-4 overflow-hidden">
-            <div className="text-base font-semibold text-gray-500 mb-6 uppercase tracking-wider flex-shrink-0">
-              {showAnswer ? "Answer" : "Question"}
-            </div>
-            <div className="text-2xl font-bold text-black leading-relaxed max-w-3xl mx-auto flex-1 flex items-center justify-center overflow-y-auto">
-              <div className="max-h-full overflow-y-auto px-2">
-                {showAnswer ? current.answer : current.question}
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Tap to flip hint */}
-        <div className="text-center mt-6">
-          <p className="text-base text-gray-400">
-            Tap card to {showAnswer ? "show question" : "reveal answer"}
-          </p>
+    {/* Flip indicator */}
+    <div className="absolute top-6 right-6 text-gray-400 group-hover:text-gray-600 transition-colors">
+      <RotateCcw size={24} />
+    </div>
+
+    {/* Card content */}
+    <div className="text-center w-full h-full flex flex-col justify-center px-4 overflow-hidden">
+      <div className="text-base font-semibold text-gray-500 mb-6 uppercase tracking-wider flex-shrink-0">
+        {showAnswer ? "Answer" : "Question"}
+      </div>
+      <div className="text-2xl font-bold text-zinc-900 leading-relaxed max-w-3xl mx-auto flex-1 flex items-center justify-center overflow-y-auto">
+        <div className="max-h-full overflow-y-auto px-2">
+          {showAnswer ? current.answer : current.question}
         </div>
       </div>
+    </div>
+  </div>
+
+    {/* Tap to flip hint */}
+    <div className="text-center mt-6">
+      <p className="text-base text-gray-400">
+        Tap card to {showAnswer ? "show question" : "reveal answer"}
+      </p>
+    </div>
+  </div>
 
       {/* Navigation Controls */}
       <div className="flex items-center justify-between w-full max-w-lg">
