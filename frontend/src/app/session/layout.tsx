@@ -1,10 +1,12 @@
 // /app/session/layout.tsx
 import type { ReactNode } from "react";
 import SidebarSessionList from "../components/SidebarSessionList";
+import { Brain } from "lucide-react";
+import Link from "next/link";
 
 export default function SessionLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-black">
       {/* Sidebar - Takes up fixed width, no overlap */}
       <aside className="w-64 bg-gray-900 text-white flex-shrink-0">
         <SidebarSessionList />
@@ -12,14 +14,21 @@ export default function SessionLayout({ children }: { children: ReactNode }) {
 
       {/* Main Content Area - Takes up remaining space */}
       <div className="flex-1 flex flex-col">
-        {/* Header - Sticky at top of main content area only */}
-        <header className="sticky top-0 z-20 flex items-center justify-between border-b bg-white px-6 py-4 shadow-sm">
-          <span className="text-xl font-bold text-gray-800">blanked</span>
-          <span className="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Login</span>
-        </header>
+        {/* Header */}
+      <header className="flex items-center justify-between px-8 py-6">
+        <Link href="/session" className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <Brain size={20} className="text-white" />
+          </div>
+          <h1 className="text-xl font-semibold">StudyBuddy </h1>
+        </Link>
+        <div className="flex items-center gap-4 text-sm">
+          <button className="hover:texst-blue-400">Log out</button>
+        </div>
+      </header>
 
         {/* Main content - Scrollable area */}
-        <main className="flex-1 overflow-y-auto p-6 bg-gray-50">
+        <main className="flex-1 overflow-y-auto p-6 bg-black">
           {children}
         </main>
       </div>

@@ -125,7 +125,7 @@ export default function SessionPage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <div className="flex flex-col items-center justify-start min-h-screen pt-20 px-4 md:px-8">
+      <div className="flex flex-col items-center justify-start min-h-screen px-4 md:px-8">
         <div className="flex flex-col gap-32 max-w-5xl w-full">
           <div className="bg-[#121212] border border-gray-800 rounded-3xl p-12 text-center">
             <h1 className="text-5xl font-bold mb-3">
