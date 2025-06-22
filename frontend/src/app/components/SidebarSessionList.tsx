@@ -28,19 +28,31 @@ export default function SidebarSessionList() {
   }, []);
 
   return (
-    <aside className="sticky top-0 h-screen w-64 overflow-y-auto bg-gray-900 text-gray-100 p-4">
-      <h2 className="text-lg font-semibold mb-4">Previous Sessions</h2>
-      <div className="space-y-2">
+    <div className="h-screen flex flex-col p-4">
+      <h2 className="text-lg font-semibold mb-4 text-white">Previous Sessions</h2>
+      
+      <div className="flex-1 overflow-y-auto space-y-2">
         {sessions.map((sesh) => (
           <div
             key={sesh.id}
-            className="cursor-pointer rounded bg-gray-800 p-2 hover:bg-gray-700"
+            className="cursor-pointer rounded bg-gray-800 p-3 hover:bg-gray-700 transition-colors text-gray-100"
             onClick={() => router.push(`/session/${sesh.id}`)}
           >
-            {sesh.title || "Untitled"}
+            <div className="font-medium truncate">
+              {sesh.title || "Untitled Session"}
+            </div>
+            <div className="text-xs text-gray-400 mt-1">
+              {sesh.startedAt?.toDate?.()?.toLocaleDateString() || "Recent"}
+            </div>
           </div>
         ))}
+        
+        {sessions.length === 0 && (
+          <div className="text-gray-400 text-sm italic">
+            No sessions yet
+          </div>
+        )}
       </div>
-    </aside>
+    </div>
   );
 }
