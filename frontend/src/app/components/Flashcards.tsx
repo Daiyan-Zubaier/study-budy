@@ -1,4 +1,7 @@
-"use client"
+"use client";
+import React, { useState, useEffect } from "react";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { app } from "../../lib/firebase"; // or wherever you initialize Firebase
 
 import { useState, useEffect } from "react"
 import { getFirestore, collection, addDoc } from "firebase/firestore"

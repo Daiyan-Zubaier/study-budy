@@ -6,6 +6,8 @@ import Quiz from "../components/Quiz";
 import Flashcards from "../components/Flashcards";
 import { db } from "../../lib/firebase";
 import { collection, doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
+import PostureMonitor from "../components/PostureMonitor";
+
 
 export default function SessionPage() {
   const [inputMinutes, setInputMinutes] = useState(25);
@@ -34,6 +36,7 @@ export default function SessionPage() {
       });
 
       setSessionId(newDocRef.id);
+      console.log("Session ID:", newDocRef.id); // 👈 Add this if it's not there
 
       intervalRef.current = setInterval(() => {
         setSecondsLeft((s) => {
@@ -184,6 +187,16 @@ export default function SessionPage() {
       </div>
 
       <div className="flex w-full justify-center">{content}</div>
+      
+      <div className="fixed bottom-6 right-6 z-50">
+        {sessionId && running && (
+          <PostureMonitor
+            sessionId={sessionId}
+            esp32Url="https://settings-aviation-diversity-encouraged.trycloudflare.com/posture"
+            isRunning={running}
+          />
+        )}
+      </div>
     </div>
   );
 }

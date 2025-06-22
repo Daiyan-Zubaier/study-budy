@@ -13,11 +13,13 @@ cred = credentials.Certificate(os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-COL = os.getenv("FIRESTORE_COLLECTION", "postureReadings")
+SESSION_ID = os.getenv("SESSION_ID")
+COL = f"sessions/{SESSION_ID}/postureLogs"
+
 
 async def main():
     reader, _ = await serial_asyncio.open_serial_connection( #opens hardware port
-        url = "/dev/ttyUSB0", baudrate=115200
+        url = "/https://defeat-robust-licence-frontier.trycloudflare.com/", baudrate=115200
     )
     print("connecting to serial; streaming to FireStore")
 
