@@ -9,6 +9,7 @@ import { collection, doc, setDoc, updateDoc, serverTimestamp } from "firebase/fi
 import PostureMonitor from "../components/PostureMonitor";
 import FaceHandTracker from "../components/FaceHandTracker";
 import { Play, Square, RotateCcw, Clock, FileText, Brain, Trophy } from "lucide-react";
+import GeminiChatWidget from "../components/GeminiChatWidget";
 
 export default function SessionPage() {
   const [inputMinutes, setInputMinutes] = useState(25);
@@ -236,6 +237,7 @@ export default function SessionPage() {
           </div>
         </div>
       </div>
+      <GeminiChatWidget/>
     </div>
   );
 }
