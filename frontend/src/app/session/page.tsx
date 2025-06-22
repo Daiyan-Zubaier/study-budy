@@ -121,8 +121,8 @@ export default function SessionPage() {
   }
 
   return (
-    <div className=" text-black flex flex-col items-center justify-center min-h-[70vh] gap-10 bg-gray-50 p-6 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-gray-800">{sessionTitle || "New Study Session"}</h1>
+    <div className="text-gray-100 flex flex-col items-center justify-center min-h-[70vh] gap-10 bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h1 className="text-2xl font-bold">{sessionTitle || "New Study Session"}</h1>
 
       <div className="flex flex-wrap items-end justify-center gap-8">
         <div className="flex flex-col items-center gap-2">
@@ -133,7 +133,7 @@ export default function SessionPage() {
             value={sessionTitle}
             onChange={(e) => setSessionTitle(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); }}
-            className="w-56 rounded border px-3 py-1 text-center shadow-sm focus:border-blue-500 focus:outline-none"
+            className="w-56 rounded border border-gray-600 bg-gray-700 px-3 py-1 text-center shadow-sm focus:border-blue-500 focus:outline-none"
           />
         </div>
 
@@ -144,7 +144,7 @@ export default function SessionPage() {
             min={0}
             value={inputMinutes}
             onChange={handleMinutesChange}
-            className="w-20 rounded border px-2 py-1 text-center shadow-sm focus:border-blue-500 focus:outline-none"
+            className="w-20 rounded border border-gray-600 bg-gray-700 px-2 py-1 text-center shadow-sm focus:border-blue-500 focus:outline-none"
             disabled={running}
           />
         </div>
@@ -157,13 +157,13 @@ export default function SessionPage() {
             max={59}
             value={inputSeconds}
             onChange={handleSecondsChange}
-            className="w-20 rounded border px-2 py-1 text-center shadow-sm focus:border-blue-500 focus:outline-none"
+            className="w-20 rounded border border-gray-600 bg-gray-700 px-2 py-1 text-center shadow-sm focus:border-blue-500 focus:outline-none"
             disabled={running}
           />
         </div>
       </div>
 
-      <div className="text-4xl font-bold text-gray-900">
+      <div className="text-4xl font-bold">
         {Math.floor(secondsLeft / 60).toString().padStart(2, "0")}
         :
         {(secondsLeft % 60).toString().padStart(2, "0")}
@@ -171,12 +171,12 @@ export default function SessionPage() {
       <div className="flex gap-4">
         <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" onClick={startTimer} disabled={running || secondsLeft === 0}>Start</button>
         <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" onClick={stopTimer} disabled={!running}>Stop</button>
-        <button className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500" onClick={resetTimer}>Reset</button>
+        <button className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500" onClick={resetTimer}>Reset</button>
       </div>
 
       <div>
         <select
-          className="rounded border px-4 py-2 shadow-sm focus:border-blue-500 focus:outline-none"
+          className="rounded border border-gray-600 bg-gray-700 px-4 py-2 shadow-sm focus:border-blue-500 focus:outline-none"
           value={option}
           onChange={(e) => setOption(e.target.value as "upload" | "flashcards" | "quiz")}
         >

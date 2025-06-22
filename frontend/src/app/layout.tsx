@@ -10,9 +10,9 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen bg-white">
+      <body className="flex min-h-screen bg-gray-900 text-gray-100">
         {/* Left Sticky Sidebar */}
-        <aside className="sticky top-0 h-screen w-64 overflow-y-auto bg-gray-900 text-gray-100 p-4">
+        <aside className="sticky top-0 h-screen w-64 overflow-y-auto bg-gray-800 text-gray-100 p-4">
           <h2 className="text-lg font-semibold mb-4">Previous Sessions</h2>
           <div className="space-y-2">
             {/* Placeholder session items */}
@@ -25,10 +25,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {/* Main Content Area */}
         <div className="flex flex-1 flex-col">
           {/* Top Navbar */}
-          <header className="flex items-center justify-between border-b bg-white px-6 py-4">
-            <span className="text-xl font-bold text-gray-800">blanked</span>
+          <header className="flex items-center justify-between border-b border-gray-700 bg-gray-800 px-6 py-4">
+            <span className="text-xl font-bold text-gray-100">blanked</span>
             {/* Placeholder for future auth */}
-            <span className="text-sm text-blue-600 cursor-pointer">Login</span>
+            <span className="text-sm text-blue-400 cursor-pointer">Login</span>
           </header>
 
           {/* Page Content */}

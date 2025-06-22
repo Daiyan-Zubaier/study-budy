@@ -30,7 +30,7 @@ export default function PdfUploadModal({ open, onClose, onFile }: PdfUploadModal
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
+      <div className="w-full max-w-lg rounded-lg bg-gray-900 text-gray-100 p-6 shadow-lg">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Upload PDF</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">✕</button>
@@ -38,20 +38,20 @@ export default function PdfUploadModal({ open, onClose, onFile }: PdfUploadModal
 
         <div
           {...getRootProps()}
-          className="flex h-48 cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 p-4 text-center hover:border-blue-400"
+          className="flex h-48 cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-600 p-4 text-center hover:border-blue-400"
         >
           <input {...getInputProps()} />
           {isDragActive ? (
-            <p className="text-blue-600">Drop the PDF here ...</p>
+            <p className="text-blue-400">Drop the PDF here ...</p>
           ) : (
             <>
-              <p className="text-gray-700">Drag & drop a PDF here, or click to select</p>
-              <p className="mt-2 text-sm text-gray-500">Only .pdf files are accepted</p>
+              <p className="text-gray-300">Drag & drop a PDF here, or click to select</p>
+              <p className="mt-2 text-sm text-gray-400">Only .pdf files are accepted</p>
             </>
           )}
         </div>
 
-        {loading && <p className="mt-4 text-sm text-gray-600">Processing…</p>}
+        {loading && <p className="mt-4 text-sm text-gray-400">Processing…</p>}
       </div>
     </div>
   );
