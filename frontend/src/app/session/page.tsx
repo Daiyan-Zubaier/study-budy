@@ -28,7 +28,6 @@ export default function SessionPage() {
       const newStartTime = new Date();
       setStartTime(newStartTime);
 
-      // Create Firestore doc
       const newDocRef = doc(collection(db, "sessions"));
       await setDoc(newDocRef, {
         title: sessionTitle,
@@ -95,22 +94,22 @@ export default function SessionPage() {
   let content: React.ReactNode = null;
   if (option === "upload") {
     content = (
-      <div className="flex flex-col items-center gap-8 py-8">
+      <div className="flex flex-col items-center gap-10 py-10">
         <Upload onFile={setUploadedFile} />
         {uploadedFile && (
-          <div className="flex gap-6 mt-6">
+          <div className="flex flex-wrap gap-6 justify-center mt-8">
             <button
-              className="flex items-center gap-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-4 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="flex items-center gap-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-10 py-5 rounded-2xl font-semibold transition-all duration-200 shadow-xl hover:shadow-green-500/30"
               onClick={() => setOption("flashcards")}
             >
-              <Brain size={20} />
+              <Brain size={22} />
               Generate Flashcards
             </button>
             <button
-              className="flex items-center gap-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-8 py-4 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="flex items-center gap-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-10 py-5 rounded-2xl font-semibold transition-all duration-200 shadow-xl hover:shadow-purple-500/30"
               onClick={() => setOption("quiz")}
             >
-              <Trophy size={20} />
+              <Trophy size={22} />
               Generate Quiz
             </button>
           </div>
@@ -118,154 +117,121 @@ export default function SessionPage() {
       </div>
     );
   } else if (option === "quiz") {
-    content = <div className="py-8"><Quiz file={uploadedFile} autoGenerate /></div>;
+    content = <div className="py-10 px-4"><Quiz file={uploadedFile} autoGenerate sessionId={sessionId ?? undefined} />
+</div>;
   } else if (option === "flashcards") {
-    content = <div className="py-8"><Flashcards file={uploadedFile} autoGenerate sessionId={sessionId ?? "temp-session"} /></div>;
+    content = <div className="py-10 px-4"><Flashcards file={uploadedFile} autoGenerate sessionId={sessionId ?? "temp-session"} /></div>;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      <div className="flex flex-col items-center justify-start min-h-screen py-12 px-8h">
-        <div className="flex flex-col gap-16 max-w-6xl mx-auto w-full">
-          
-          {/* Header Card */}
-          <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-3xl p-12 text-center mt-8">
-            <h1 className="text-5xl font-bold text-white mb-4">
+    <div className="min-h-screen bg-black text-white">
+      <div className="flex flex-col items-center justify-start min-h-screen pt-20 px-4 md:px-8">
+        <div className="flex flex-col gap-32 max-w-5xl w-full">
+          <div className="bg-[#121212] border border-gray-800 rounded-3xl p-12 text-center">
+            <h1 className="text-5xl font-bold mb-3">
               {sessionTitle || "New Study Session"}
             </h1>
             <p className="text-xl text-gray-400">Focus, learn, and track your progress</p>
           </div>
 
-          {/* Session Configuration */}
-          <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-3xl p-12">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div className="bg-[#121212] border border-gray-800 rounded-3xl p-12 space-y-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               <div className="space-y-4">
-                <label className="block text-lg font-medium text-gray-300">Session Title</label>
+                <label className="block text-lg font-semibold text-gray-300">Session Title</label>
                 <input
                   type="text"
                   placeholder="e.g. Physics Review"
                   value={sessionTitle}
                   onChange={(e) => setSessionTitle(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); }}
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-xl px-6 py-4 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all text-lg"
+                  className="w-full bg-gray-800 border border-gray-600 rounded-xl px-6 py-4 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500/30 focus:outline-none text-lg"
                 />
               </div>
 
               <div className="space-y-4">
-                <label className="block text-lg font-medium text-gray-300">Minutes</label>
+                <label className="block text-lg font-semibold text-gray-300">Minutes</label>
                 <input
                   type="number"
                   min={0}
                   value={inputMinutes}
                   onChange={handleMinutesChange}
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-xl px-6 py-4 text-white text-center focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all text-lg"
+                  className="w-full bg-gray-800 border border-gray-600 rounded-xl px-6 py-4 text-white text-center focus:ring-2 focus:ring-blue-500/30 focus:outline-none text-lg"
                   disabled={running}
                 />
               </div>
 
               <div className="space-y-4">
-                <label className="block text-lg font-medium text-gray-300">Seconds</label>
+                <label className="block text-lg font-semibold text-gray-300">Seconds</label>
                 <input
                   type="number"
                   min={0}
                   max={59}
                   value={inputSeconds}
                   onChange={handleSecondsChange}
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-xl px-6 py-4 text-white text-center focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all text-lg"
+                  className="w-full bg-gray-800 border border-gray-600 rounded-xl px-6 py-4 text-white text-center focus:ring-2 focus:ring-blue-500/30 focus:outline-none text-lg"
                   disabled={running}
                 />
               </div>
             </div>
 
-            {/* Timer Display */}
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-6 bg-gray-900/50 border border-gray-600 rounded-3xl px-12 py-10">
-                <Clock className="text-blue-400" size={40} />
-                <div className="text-7xl font-bold text-white font-mono">
+            <div className="text-center">
+              <div className="inline-flex items-center gap-6 bg-gray-900 border border-gray-700 rounded-3xl px-12 py-10">
+                <Clock className="text-blue-400" size={36} />
+                <div className="text-6xl font-bold text-white font-mono">
                   {Math.floor(secondsLeft / 60).toString().padStart(2, "0")}
                   <span className="text-blue-400">:</span>
                   {(secondsLeft % 60).toString().padStart(2, "0")}
                 </div>
               </div>
             </div>
-            
-            {/* Control Buttons */}
-            <div className="flex gap-6 justify-center">
-              <button 
-                className="flex items-center gap-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white px-8 py-4 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl disabled:shadow-none text-lg" 
-                onClick={startTimer} 
-                disabled={running || secondsLeft === 0}
-              >
-                <Play size={20} />
-                Start
+
+            <div className="flex flex-wrap justify-center gap-6">
+              <button className="flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white px-10 py-4 rounded-2xl font-semibold text-lg shadow-md hover:shadow-green-500/30 transition-all" onClick={startTimer} disabled={running || secondsLeft === 0}>
+                <Play size={20} /> Start
               </button>
-              <button 
-                className="flex items-center gap-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white px-8 py-4 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl disabled:shadow-none text-lg" 
-                onClick={stopTimer} 
-                disabled={!running}
-              >
-                <Square size={20} />
-                Stop
+              <button className="flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white px-10 py-4 rounded-2xl font-semibold text-lg shadow-md hover:shadow-red-500/30 transition-all" onClick={stopTimer} disabled={!running}>
+                <Square size={20} /> Stop
               </button>
-              <button 
-                className="flex items-center gap-3 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-8 py-4 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl text-lg" 
-                onClick={resetTimer}
-              >
-                <RotateCcw size={20} />
-                Reset
+              <button className="flex items-center gap-3 bg-gray-600 hover:bg-gray-700 text-white px-10 py-4 rounded-2xl font-semibold text-lg shadow-md hover:shadow-white/20 transition-all" onClick={resetTimer}>
+                <RotateCcw size={20} /> Reset
               </button>
             </div>
           </div>
 
-          {/* Activity Selection */}
-          <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-3xl p-12 mb-16">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-white mb-4">Study Activity</h2>
-              <p className="text-xl text-gray-400">Choose how you want to study</p>
+          <div className="bg-[#121212] border border-gray-800 rounded-3xl p-12 space-y-12">
+            <div className="text-center space-y-2">
+              <h2 className="text-3xl font-bold text-white">Study Activity</h2>
+              <p className="text-lg text-gray-400">Choose how you want to study</p>
             </div>
 
-            <div className="flex justify-center mb-12">
-              <div className="bg-gray-900/50 border border-gray-600 rounded-2xl p-2 inline-flex gap-2">
-                <button
-                  className={`flex items-center gap-3 px-8 py-4 rounded-xl font-medium transition-all text-lg ${
-                    option === "upload" 
-                      ? "bg-blue-600 text-white shadow-lg" 
-                      : "text-gray-400 hover:text-white hover:bg-gray-700/50"
-                  }`}
-                  onClick={() => setOption("upload")}
-                >
-                  <FileText size={20} />
-                  Upload
-                </button>
-                <button
-                  className={`flex items-center gap-3 px-8 py-4 rounded-xl font-medium transition-all text-lg ${
-                    option === "flashcards" 
-                      ? "bg-blue-600 text-white shadow-lg" 
-                      : "text-gray-400 hover:text-white hover:bg-gray-700/50"
-                  }`}
-                  onClick={() => setOption("flashcards")}
-                >
-                  <Brain size={20} />
-                  Flashcards
-                </button>
-                <button
-                  className={`flex items-center gap-3 px-8 py-4 rounded-xl font-medium transition-all text-lg ${
-                    option === "quiz" 
-                      ? "bg-blue-600 text-white shadow-lg" 
-                      : "text-gray-400 hover:text-white hover:bg-gray-700/50"
-                  }`}
-                  onClick={() => setOption("quiz")}
-                >
-                  <Trophy size={20} />
-                  Quiz
-                </button>
+            <div className="flex justify-center">
+              <div className="bg-gray-900 border border-gray-700 rounded-2xl p-2 inline-flex gap-2">
+                {["upload", "flashcards", "quiz"].map((type) => (
+                  <button
+                    key={type}
+                    className={`flex items-center gap-3 px-8 py-4 rounded-xl font-medium transition-all text-lg ${option === type ? "bg-blue-600 text-white shadow-lg" : "text-gray-400 hover:text-white hover:bg-gray-700/50"}`}
+                    onClick={() => setOption(type as any)}
+                  >
+                    {type === "upload" ? <FileText size={20} /> : type === "flashcards" ? <Brain size={20} /> : <Trophy size={20} />}
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </button>
+                ))}
               </div>
             </div>
+            <div className="fixed bottom-6 right-6 z-50">
+                {sessionId && running && (
+                <PostureMonitor
+                    sessionId={sessionId}
+                    esp32Url="https://competitions-expensive-dim-vacuum.trycloudflare.com/posture"
+                    isRunning={running}
+                />
+                )}
+            </div>
 
-            <div className="flex w-full justify-center">{content}</div>
+            <div className="flex w-full justify-center pt-4">{content}</div>
           </div>
-          
-          <div className="pb-16">
+
+          <div className="pb-24">
             <FaceHandTracker />
           </div>
         </div>

@@ -19,6 +19,11 @@ export default async function SessionStatsPage({ params }: { params: { sessionId
     const postureSnap = await getDocs(collection(db, "sessions", sessionId, "postureLogs"));
     const postureLogs = postureSnap.docs.map((doc) => doc.data());
 
+    const quizRef = doc(db, "sessions", sessionId, "quiz", "results");
+    const quizSnap = await getDoc(quizRef);
+    const quizData = quizSnap.exists() ? quizSnap.data() : null;
+
+
     console.log("Posture logs:", postureLogs); // Debug log
 
     if (!sessionData) {
@@ -101,6 +106,49 @@ export default async function SessionStatsPage({ params }: { params: { sessionId
               <p className="text-gray-500 italic text-center">No posture data recorded for this session.</p>
             )}
           </div>
+          {quizData && (
+          <div className="bg-white rounded-lg shadow-md p-6 mt-6">
+            <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">📘 Quiz Results</h2>
+
+            <div className="text-center text-lg text-gray-700 mb-6">
+              Score: <span className="text-green-600 font-bold">{quizData.score}</span> / {quizData.total}
+            </div>
+
+            <div className="space-y-6">
+              {quizData.questions?.map((q: any, idx: number) => {
+                const isCorrect = q.wasCorrect;
+                return (
+                  <div
+                    key={idx}
+                    className={`p-4 rounded-lg shadow-sm border-2 ${
+                      isCorrect ? "border-green-300 bg-green-50" : "border-red-300 bg-red-50"
+                    }`}
+                  >
+                    <div className="mb-2">
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        Q{idx + 1}: {q.question}
+                      </h3>
+                    </div>
+
+                    <div className="text-gray-700 mb-1">
+                      <span className="font-medium">Your Answer:</span>{" "}
+                      <span className={isCorrect ? "text-green-700 font-bold" : "text-red-700 font-bold"}>
+                        {q.selectedAnswer || "No answer"}
+                      </span>
+                    </div>
+
+                    {!isCorrect && (
+                      <div className="text-gray-700">
+                        <span className="font-medium">Correct Answer:</span>{" "}
+                        <span className="text-green-700 font-bold">{q.correctAnswer}</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
         </div>
       </div>
     );

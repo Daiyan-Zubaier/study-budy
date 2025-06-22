@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { doc, collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../lib/firebase";
+import { Monitor, Wifi, WifiOff } from "lucide-react";
 
 interface PostureMonitorProps {
   sessionId: string;
@@ -50,28 +51,38 @@ export default function PostureMonitor({ sessionId, esp32Url, isRunning }: Postu
   }, [isRunning, sessionId]);
 
   return (
-    <div
-      className={`rounded border p-4 shadow w-64 text-center ${
-        status === "good"
-          ? "bg-green-100 border-green-300 text-green-800"
-          : status === "bad"
-          ? "bg-yellow-100 border-yellow-300 text-yellow-800"
-          : "bg-red-100 border-red-300 text-red-800"
-      }`}
-    >
-      <h3 className="font-bold mb-2">Posture Monitor</h3>
-      <p className="text-2xl">{angle !== null ? `${angle.toFixed(1)}°` : "..."}</p>
-      <p className="mt-2 font-semibold uppercase">
-        {status === "good"
-          ? "Posture Good ✅"
-          : status === "bad"
-          ? "Fix Your Posture ⚠️"
-          : "Disconnected ❌"}
-      </p>
+    <div className="bg-gray-800/90 backdrop-blur-sm border border-gray-600 rounded-2xl p-6 shadow-2xl w-72 text-center z-30">
+      <div className="flex items-center justify-center gap-3 mb-4">
+        <Monitor className="text-blue-400" size={24} />
+        <h3 className="font-bold text-white text-lg">Posture Monitor</h3>
+      </div>
+      
+      <div className="mb-4">
+        <p className="text-4xl font-bold text-white mb-2">
+          {angle !== null ? `${angle.toFixed(1)}°` : "..."}
+        </p>
+      </div>
+      
+      <div className="flex items-center justify-center gap-2">
+        {status === "disconnected" ? (
+          <WifiOff className="text-red-400" size={20} />
+        ) : (
+          <Wifi className="text-green-400" size={20} />
+        )}
+        <p className={`font-semibold uppercase text-sm ${
+          status === "good"
+            ? "text-green-400"
+            : status === "bad"
+            ? "text-yellow-400"
+            : "text-red-400"
+        }`}>
+          {status === "good"
+            ? "Posture Good ✅"
+            : status === "bad"
+            ? "Fix Your Posture ⚠️"
+            : "Disconnected ❌"}
+        </p>
+      </div>
     </div>
   );
-  
-  
-  
-  
 }
