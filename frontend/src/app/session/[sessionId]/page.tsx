@@ -1,3 +1,4 @@
+
 // app/session/[sessionId]/page.tsx
 import { db } from "@/lib/firebase";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
