@@ -89,16 +89,16 @@ export default function Flashcards({ file, autoGenerate = false, sessionId }: Fl
   }, [autoGenerate]);
 
   if (!file) {
-    return <div className="p-4 bg-gray-100 rounded shadow text-center">Please upload a file first.</div>;
+    return <div className="p-4 bg-gray-800 text-gray-100 rounded shadow text-center">Please upload a file first.</div>;
   }
 
   if (loading) {
-    return <div className="p-4 bg-gray-100 rounded shadow text-center">Generating flashcards...</div>;
+    return <div className="p-4 bg-gray-800 text-gray-100 rounded shadow text-center">Generating flashcards...</div>;
   }
 
   if (flashcards.length === 0) {
     return (
-      <div className="p-4 bg-gray-100 rounded shadow text-center">
+      <div className="p-4 bg-gray-800 text-gray-100 rounded shadow text-center">
         <button
           className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
           onClick={handleGenerate}
@@ -112,9 +112,9 @@ export default function Flashcards({ file, autoGenerate = false, sessionId }: Fl
   const current = flashcards[currentIndex];
 
   return (
-    <div className="p-4 bg-gray-100 rounded shadow text-center w-full max-w-md">
+    <div className="p-4 bg-gray-800 text-gray-100 rounded shadow text-center w-full max-w-md">
       <div
-        className="bg-white rounded shadow p-6 text-lg font-semibold cursor-pointer min-h-[100px] flex items-center justify-center"
+        className="bg-gray-700 rounded shadow p-6 text-lg font-semibold cursor-pointer min-h-[100px] flex items-center justify-center"
         onClick={() => setShowAnswer(!showAnswer)}
       >
         {showAnswer ? current.answer : current.question}
@@ -122,7 +122,7 @@ export default function Flashcards({ file, autoGenerate = false, sessionId }: Fl
 
       <div className="flex justify-between mt-4">
         <button
-          className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500"
           onClick={() => {
             setCurrentIndex((i) => Math.max(0, i - 1));
             setShowAnswer(false);
@@ -131,11 +131,11 @@ export default function Flashcards({ file, autoGenerate = false, sessionId }: Fl
         >
           Prev
         </button>
-        <div className="text-sm text-gray-600 mt-2">
+        <div className="text-sm text-gray-300 mt-2">
           {currentIndex + 1} / {flashcards.length}
         </div>
         <button
-          className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500"
           onClick={() => {
             setCurrentIndex((i) => Math.min(flashcards.length - 1, i + 1));
             setShowAnswer(false);

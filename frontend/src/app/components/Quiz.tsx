@@ -44,14 +44,14 @@ export default function Quiz({ file, autoGenerate = false }: QuizProps) {
 
   if (!file) {
     return (
-      <div className="p-4 bg-gray-100 rounded shadow text-center">
+      <div className="p-4 bg-gray-800 text-gray-100 rounded shadow text-center">
         Please upload a file first.
       </div>
     );
   }
 
   return (
-    <div className="p-4 bg-gray-100 rounded shadow text-center">
+    <div className="p-4 bg-gray-800 text-gray-100 rounded shadow text-center">
       <button
         className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 mb-4"
         onClick={handleGenerate}
@@ -61,16 +61,16 @@ export default function Quiz({ file, autoGenerate = false }: QuizProps) {
       </button>
       {quiz && (
         <div>
-          <p className="text-sm text-gray-600">Generated Quiz:</p>
-          <pre className="text-xs bg-white p-2 rounded max-h-40 overflow-auto">
+          <p className="text-sm text-gray-300">Generated Quiz:</p>
+          <pre className="text-xs bg-gray-700 p-2 rounded max-h-40 overflow-auto text-gray-100">
             {quiz}
           </pre>
         </div>
       )}
       {fileText && !quiz && (
         <div>
-          <p className="text-sm text-gray-600">File contents (for demo):</p>
-          <pre className="text-xs bg-white p-2 rounded max-h-40 overflow-auto">
+          <p className="text-sm text-gray-300">File contents (for demo):</p>
+          <pre className="text-xs bg-gray-700 p-2 rounded max-h-40 overflow-auto text-gray-100">
             {fileText}
           </pre>
         </div>
