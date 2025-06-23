@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Upload from "../components/Upload";
 import Quiz from "../components/Quiz";
 import Flashcards from "../components/Flashcards";
+import SpeechToText from "../components/SpeechToText";
 import { db } from "../../lib/firebase";
 import { collection, doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import PostureMonitor from "../components/PostureMonitor";
@@ -92,6 +93,55 @@ export default function SessionPage() {
     setSecondsLeft(inputMinutes * 60 + val);
   };
 
+  const handleSpeechCommand = (title: string, minutes: number, seconds: number, shouldStart: boolean) => {
+    // Update timer values
+    setInputMinutes(minutes);
+    setInputSeconds(seconds);
+    setSecondsLeft(minutes * 60 + seconds);
+    
+    // Update session title if provided
+    if (title) {
+      setSessionTitle(title);
+    }
+    
+    // Auto-start if requested
+    if (shouldStart && !running) {
+      // Use the title directly instead of relying on state
+      const sessionTitleToUse = title || sessionTitle || "Voice Session";
+      
+      // Start timer with the correct title
+      setTimeout(async () => {
+        if (secondsLeft > 0 || (minutes * 60 + seconds) > 0) {
+          setRunning(true);
+          const newStartTime = new Date();
+          setStartTime(newStartTime);
+
+          const newDocRef = doc(collection(db, "sessions"));
+          await setDoc(newDocRef, {
+            title: sessionTitleToUse, // Use the title directly
+            startedAt: serverTimestamp(),
+            status: "inProgress"
+          });
+
+          setSessionId(newDocRef.id);
+          console.log("Session ID:", newDocRef.id);
+
+          intervalRef.current = setInterval(() => {
+            setSecondsLeft((s) => {
+              if (s <= 1) {
+                clearInterval(intervalRef.current!);
+                setRunning(false);
+                stopSession();
+                return 0;
+              }
+              return s - 1;
+            });
+          }, 1000);
+        }
+      }, 200); // Slightly longer delay
+    }
+  };
+
   let content: React.ReactNode = null;
   if (option === "upload") {
     content = (
@@ -136,6 +186,8 @@ export default function SessionPage() {
           </div>
 
           <div className="bg-[#121212] border border-gray-800 rounded-3xl p-12 space-y-12">
+            <SpeechToText onSessionCommand={handleSpeechCommand} />
+            
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               <div className="space-y-4">
                 <label className="block text-lg font-semibold text-gray-300">Session Title</label>

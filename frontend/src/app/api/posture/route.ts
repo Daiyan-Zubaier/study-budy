@@ -1,6 +1,6 @@
 // frontend/app/api/posture/route.ts
 export async function GET() {
-    const res = await fetch("https://competitions-expensive-dim-vacuum.trycloudflare.com/posture", {
+    const res = await fetch("https://viii-color-groove-comparing.trycloudflare.com/posture", {
       method: "GET",
       headers: {
         "User-Agent": "Node.js",
