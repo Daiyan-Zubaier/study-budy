@@ -1,60 +1,78 @@
-Inspiration
-We wanted to build something that actually felt like a real study partner — not just an AI that spits out flashcards, but one that chats with you, checks in on your well-being, and helps you stay focused. Studying alone can feel isolating, and we wanted to recreate the experience of having someone beside you: encouraging you, quizzing you, and reminding you to sit up straight.
+# 📚 StudyBuddy
 
-What it does
-How we built it
-StudyBuddy is your AI-powered study companion. It can:
+StudyBuddy is your **AI-powered study companion** — designed to keep you productive, focused, and healthy while studying. It combines AI, real-time hardware data, and a polished UI to feel less like an app and more like a supportive study partner.
 
-💬 Chat with you like a study buddy
+---
 
-🧠 Auto-generate flashcards from PDFs
+## 🚀 What It Does
 
-📝 Create quizzes based on uploaded content
+StudyBuddy helps you study smarter and stay healthier by offering:
 
-📈 Track your progress
-
-🪑 Use real-time posture detection to remind you to sit upright
-
-🚰 Prompt you to take breaks and drink water — just like a real friend would
+- 💬 **Chat with an AI study buddy** for explanations, help, and motivation  
+- 🧠 **Auto-generate flashcards** from uploaded PDFs  
+- 📝 **Create quizzes** based on your study materials  
+- 📈 **Track study progress** over time  
+- 🪑 **Real-time posture detection** to remind you to sit upright  
+- 🚰 **Break and hydration reminders** to prevent burnout  
 
 It’s like having a friend that keeps you sharp, healthy, and on task.
 
-Challenges we ran into
-Getting real-time posture data from the ESP32 into Firebase
+---
 
-Cleaning and formatting Gemini’s AI output into usable JSON
+## 🛠️ How We Built It
 
-Making multiple study modes feel cohesive in one interface
+StudyBuddy is a full-stack project that brings together AI, hardware, and cloud services:
 
-Dealing with CORS bugs and deployment issues
+- **Frontend:** Polished, animated UI for a smooth study experience  
+- **Backend:** FastAPI for handling AI requests and application logic  
+- **AI:** Gemini for chat, flashcard generation, and quiz creation  
+- **Hardware:** Custom ESP32 setup for real-time posture detection  
+- **Database:** Firebase for real-time syncing of posture and study data  
 
-Juggling a lot of features in a short hackathon window
+---
 
-Accomplishments that we're proud of
-Built a full-stack app with AI, hardware, and real-time syncing
+## ⚡ Challenges We Ran Into
 
-Integrated posture tracking using a custom ESP32 setup
+- Streaming real-time posture data from an **ESP32 into Firebase**
+- Cleaning and formatting **Gemini’s AI output into usable JSON**
+- Making multiple study modes feel **cohesive in one interface**
+- Debugging **CORS and deployment issues**
+- Juggling many features within a **short hackathon timeframe**
 
-Created a polished, animated UI that feels fun to use
+---
 
-Managed to tie together multiple services (Firebase, FastAPI, Gemini) smoothly
+## 🏆 Accomplishments We’re Proud Of
 
-What we learned
-How to engineer better prompts for LLMs
+- Built a **full-stack app** combining AI, hardware, and real-time syncing  
+- Integrated **real-time posture tracking** using a custom ESP32 setup  
+- Created a **polished, animated UI** that’s fun and intuitive to use  
+- Successfully connected **Firebase, FastAPI, and Gemini** into one system  
 
-How to sync hardware data into cloud databases in real time
+---
 
-Full-stack coordination under time pressure
+## 📚 What We Learned
 
-How to build a product that’s technically complex but user-friendly
+- How to engineer **better prompts for LLMs**
+- How to sync **hardware data to cloud databases in real time**
+- Full-stack coordination under **tight time constraints**
+- Designing a product that’s **technically complex but user-friendly**
 
-What's next for StudyBuddy
-We want to:
+---
 
-Add voice-based interaction so you can talk to your study buddy
+## 🔮 What’s Next for StudyBuddy
 
-Implement smarter tracking and personalized study feedback
+We’d love to continue developing StudyBuddy by:
 
-Expand posture detection to support wearable sensors
+- 🎙️ Adding **voice-based interaction** to talk to your study buddy  
+- 📊 Implementing **smarter tracking and personalized feedback**
+- ⌚ Expanding posture detection to support **wearable sensors**
+- 📱 Deploying a **mobile-first version** for studying on the go  
 
-Deploy it as a mobile-first app for studying on the go
+---
+
+## 💡 Inspiration
+
+Studying is hard — and often unhealthy. StudyBuddy was built to make studying feel more supportive, interactive, and sustainable.
+
+---
+
